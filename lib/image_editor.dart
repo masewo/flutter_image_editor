@@ -25,6 +25,7 @@ class ImageEditor {
       }
       final handler = ImageHandler.memory(tmp);
       final editOption = ImageEditorOption();
+      editOption.outputFormat = imageEditorOption.outputFormat;
       for (final option in group) {
         editOption.addOption(option);
       }
