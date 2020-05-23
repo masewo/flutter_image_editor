@@ -29,6 +29,7 @@ class ImageEditor {
       for (final option in group) {
         editOption.addOption(option);
       }
+      editOption.outputFormat = imageEditorOption.outputFormat;
 
       tmp = await handler.handleAndGetUint8List(editOption);
     }
@@ -52,6 +53,8 @@ class ImageEditor {
       for (final option in group) {
         editOption.addOption(option);
       }
+
+      editOption.outputFormat = imageEditorOption.outputFormat;
 
       tmp = await handler.handleAndGetUint8List(editOption);
 
@@ -80,6 +83,8 @@ class ImageEditor {
         editOption.addOption(option);
       }
 
+      editOption.outputFormat = imageEditorOption.outputFormat;
+
       final target = await _createTmpFilePath();
 
       tmp = await handler.handleAndGetFile(editOption, target);
@@ -102,6 +107,8 @@ class ImageEditor {
       for (final option in group) {
         editOption.addOption(option);
       }
+
+      editOption.outputFormat = imageEditorOption.outputFormat;
 
       tmp = await handler.handleAndGetUint8List(editOption);
     }
