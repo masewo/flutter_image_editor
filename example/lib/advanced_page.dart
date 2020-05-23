@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:extended_image/extended_image.dart';
@@ -36,7 +35,9 @@ class _AdvancedPageState extends State<AdvancedPage> {
             ),
             IconButton(
               icon: Icon(Icons.check),
-              onPressed: crop,
+              onPressed: () async {
+                await crop();
+              },
             ),
           ],
         ),
@@ -47,6 +48,20 @@ class _AdvancedPageState extends State<AdvancedPage> {
               AspectRatio(
                 aspectRatio: 1,
                 child: buildImage(),
+              ),
+              Expanded(
+                child: SliderTheme(
+                  data: SliderThemeData(
+                    showValueIndicator: ShowValueIndicator.always,
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      _buildSat(),
+                      _buildBrightness(),
+                      _buildCon(),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
@@ -108,7 +123,7 @@ class _AdvancedPageState extends State<AdvancedPage> {
     );
   }
 
-  void crop() async {
+  Future<void> crop([bool test = false]) async {
     final state = editorKey.currentState;
     final rect = state.getCropRect();
     final action = state.editAction;
@@ -128,9 +143,13 @@ class _AdvancedPageState extends State<AdvancedPage> {
       option.addOption(RotateOption(radian.toInt()));
     }
 
+    option.addOption(ColorOption.saturation(sat));
+    option.addOption(ColorOption.brightness(bright));
+    option.addOption(ColorOption.contrast(con));
+
     option.outputFormat = OutputFormat.png(88);
 
-    print(json.encode(option.toJson()));
+    print(JsonEncoder.withIndent('  ').convert(option.toJson()));
 
     final start = DateTime.now();
     final result = await ImageEditor.editImage(
@@ -151,11 +170,6 @@ class _AdvancedPageState extends State<AdvancedPage> {
 
   void flip() {
     editorKey.currentState.flip();
-  }
-
-  static Future<Uint8List> getImageFromEditorKey(
-      GlobalKey<ExtendedImageEditorState> editorKey) async {
-    return editorKey.currentState.rawImageData;
   }
 
   rotate(bool right) {
@@ -189,5 +203,51 @@ class _AdvancedPageState extends State<AdvancedPage> {
       provider = ExtendedFileImageProvider(result);
       setState(() {});
     }
+  }
+
+  double sat = 1;
+  double bright = 1;
+  double con = 1;
+
+  _buildSat() {
+    return Slider(
+      label: 'sat : ${sat.toStringAsFixed(2)}',
+      onChanged: (double value) {
+        setState(() {
+          sat = value;
+        });
+      },
+      value: sat,
+      min: 0,
+      max: 2,
+    );
+  }
+
+  _buildBrightness() {
+    return Slider(
+      label: 'brightness : ${bright.toStringAsFixed(2)}',
+      onChanged: (double value) {
+        setState(() {
+          bright = value;
+        });
+      },
+      value: bright,
+      min: 0,
+      max: 2,
+    );
+  }
+
+  _buildCon() {
+    return Slider(
+      label: 'con : ${con.toStringAsFixed(2)}',
+      onChanged: (double value) {
+        setState(() {
+          con = value;
+        });
+      },
+      value: con,
+      min: 0,
+      max: 4,
+    );
   }
 }

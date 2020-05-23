@@ -1,3 +1,15 @@
+## 0.3.0
+
+Support some color option.
+
+- [x] brightness
+- [x] contrast
+- [x] saturation
+
+## 0.2.0
+
+Migrate swift to objc.
+
 ## 0.1.6
 
 Fix:
