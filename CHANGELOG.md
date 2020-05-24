@@ -1,3 +1,25 @@
+## 0.4.1
+
+Split option file.
+
+## 0.4.0+2
+
+Update readme.
+
+## 0.4.0+1
+
+Update readme.
+
+## 0.4.0
+
+New Feature:
+
+- ScaleOption
+
+Fix:
+
+- output format
+
 ## 0.3.0
 
 Support some color option.
