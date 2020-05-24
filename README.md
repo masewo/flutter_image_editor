@@ -1,6 +1,6 @@
 # image_editor
 
-![CI](https://github.com/fluttercandies/flutter_image_editor/workflows/CI/badge.svg)
+![BUILD](https://github.com/fluttercandies/flutter_image_editor/workflows/PR/badge.svg)
 
 Support android ios, use the native way to flip, crop, rotate pictures.
 
@@ -8,6 +8,7 @@ The version of readme pub and github may be inconsistent, please refer to [githu
 
 - [image_editor](#image_editor)
   - [Screenshot](#screenshot)
+  - [Platform of support](#platform-of-support)
   - [Usage](#usage)
     - [ImageEditor method params](#imageeditor-method-params)
     - [ImageEditorOption](#imageeditoroption)
@@ -16,8 +17,11 @@ The version of readme pub and github may be inconsistent, please refer to [githu
       - [Clip](#clip)
       - [Rotate](#rotate)
       - [Color](#color)
+      - [ScaleOption](#scaleoption)
     - [OutputFormat](#outputformat)
   - [Common issue](#common-issue)
+    - [iOS](#ios)
+      - [Privacy of camera](#privacy-of-camera)
   - [LICENSE](#license)
     - [Third party](#third-party)
 
@@ -25,13 +29,17 @@ The version of readme pub and github may be inconsistent, please refer to [githu
 
 ![img](https://github.com/kikt-blog/image/raw/master/github/flutter_image_editor_ss.gif)
 
+## Platform of support
+
+Android, iOS.
+
 ## Usage
 
 [![pub package](https://img.shields.io/pub/v/image_editor.svg)](https://pub.dev/packages/image_editor) [![GitHub](https://img.shields.io/github/license/fluttercandies/flutter_image_editor.svg)](https://github.com/fluttercandies/flutter_image_editor) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/flutter_image_editor.svg?style=social&label=Stars)](https://github.com/fluttercandies/flutter_image_editor)
 
 ```yaml
 dependencies:
-  image_editor: ^0.2.0
+  image_editor: ^0.4.0
 ```
 
 Import
@@ -68,6 +76,7 @@ final editorOption = ImageEditorOption();
 editorOption.addOption(FlipOption());
 editorOption.addOption(ClipOption());
 editorOption.addOption(RotateOption());
+editorOption.addOption(); // and other option.
 
 editorOption.outputFormat = OutputFormat.png(88);
 ```
@@ -100,22 +109,46 @@ ColorOption();
 
 In android, it's use 5x4 matrix : https://developer.android.google.cn/reference/android/graphics/ColorMatrix.html
 
-In iOS, it's use 4x4 matrix.
+a, b, c, d, e,  
+f, g, h, i, j,  
+k, l, m, n, o,  
+p, q, r, s, t
+
+---
+
+In iOS, it's use 4x4 matrix. The last of line will be ignored.
+
+a, b, c, d,  
+f, g, h, i,  
+k, l, m, n,  
+p, q, r, s
+
+#### ScaleOption
+
+```dart
+ScaleOption(width,height);
+```
+
+After specifying the width and height, it is not clipped, but stretched to the specified width and height (Does not maintain the aspect ratio of the image).
 
 ### OutputFormat
 
 ```dart
 var outputFormat = OutputFormat.png();
 var outputFormat = OutputFormat.jpeg(95);
+
 ```
 
 ## Common issue
 
-```bash
-..../image_editor-0.1.4/ios/Classes/FlutterImageEditorPlugin.m:2:9: 'image_editor/image_editor-Swift.h' file not found
-```
+### iOS
 
-See [#10](https://github.com/fluttercandies/flutter_image_editor/issues/10)
+#### Privacy of camera
+
+Because, I include [GPUImage](https://github.com/BradLarson/GPUImage.git) to handle image data, and the library have Camera api, so you must add next Usage String in info.plist. It was introduced in version 0.3.x, if you don't need the new features added after 0.3, you can keep using the old version.
+
+[Why need add it by apple](https://developer.apple.com/library/archive/qa/qa1937/_index.html)  
+[How to add it by apple](https://help.apple.com/xcode/mac/8.0/#/dev3f399a2a6)
 
 ## LICENSE
 
