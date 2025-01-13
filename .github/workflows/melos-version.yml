@@ -1,0 +1,37 @@
+name: "melos version"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  melos_version:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Install flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: false
+      - name: show flutter version
+        run: flutter doctor -v
+      - name: Install melos
+        run: flutter pub global activate melos
+      - name: Install dependencies
+        run: melos bootstrap
+      - name: Setup git
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+      - name: Version packages
+        run: melos version --yes
+      - name: Setup git by github cli
+        run: gh auth setup-git
+      - name: Show git log
+        run: git log -1
