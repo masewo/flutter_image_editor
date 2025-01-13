@@ -1,4 +1,29 @@
+## 1.6.0
+
+ - **FIX**: error for new sdk.
+ - **FEAT**: upgrade android sdk to 35.
+ - **DOCS**(README): external link BlendMode (#137).
+
+## 1.5.1
+
+ - Update a dependency to the latest release.
+
 # CHANGELOG
+
+## 1.5.0
+
+- Support draw, merge, mix image for OpenHarmony
+- Fix: mergeToFile return parameter type error
+- Feat: Support `TextAlign` for `EditorText`.
+- deps: Bump `image_editor_platform_interface` to `1.1.0`.
+- deps: Bump `image_editor_common` to `1.1.1`.
+- deps: Bump `image_editor_ohos` to `0.0.7`.
+
+## 1.4.0
+
+- Support OpenHarmony. [#122](https://github.com/fluttercandies/flutter_image_editor/issues/122)
+- Added AGP 8 Support for Android. [#117](https://github.com/fluttercandies/flutter_image_editor/issues/117)
+- Fix: Create JPEG images without embedded ICC profile. [#116](https://github.com/fluttercandies/flutter_image_editor/issues/116)
 
 ## 1.3.0
 

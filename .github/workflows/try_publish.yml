@@ -10,19 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: k-paxian/dart-package-publisher@master
         with:
           credentialJson: ${{ secrets.CREDENTIAL_JSON }}
           skipTests: true
           relativePath: "image_editor"
+          accessToken: 
+          refreshToken:
       - uses: k-paxian/dart-package-publisher@master
         with:
           credentialJson: ${{ secrets.CREDENTIAL_JSON }}
           skipTests: true
           relativePath: "image_editor_common"
+          accessToken: 
+          refreshToken:
       - uses: k-paxian/dart-package-publisher@master
         with:
           credentialJson: ${{ secrets.CREDENTIAL_JSON }}
           skipTests: true
           relativePath: "image_editor_platform_interface"
+          accessToken: 
+          refreshToken:

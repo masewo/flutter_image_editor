@@ -7,6 +7,8 @@
 
 #import "EditorUIImageHandler.h"
 #import <CoreImage/CIFilterBuiltins.h>
+#import <ImageIO/ImageIO.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 
 void releaseCGContext(CGContextRef ref) {
@@ -114,7 +116,16 @@ UIImage *getImageFromCGContext(CGContextRef context) {
     if (fmt.format == 0) {
         return UIImagePNGRepresentation(outImage);
     } else {
-        return UIImageJPEGRepresentation(outImage, ((CGFloat) fmt.quality) / 100);
+        NSMutableData *data = [NSMutableData new];
+        CGImageDestinationRef imageDestination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)data, kUTTypeJPEG, 1, NULL);
+        NSDictionary *options = @{
+            (id)kCGImageDestinationLossyCompressionQuality : @(((CGFloat)fmt.quality) / 100),
+            (id)kCGImageDestinationOptimizeColorForSharing: (id)kCFBooleanTrue
+        };
+        CGImageDestinationAddImage(imageDestination, outImage.CGImage, (CFDictionaryRef)options);
+        CGImageDestinationFinalize(imageDestination);
+        CFRelease(imageDestination);
+        return data;
     }
 }
 
@@ -330,6 +341,7 @@ UIImage *getImageFromCGContext(CGContextRef context) {
             NSFontAttributeName: font,
             NSForegroundColorAttributeName: color,
             NSBackgroundColorAttributeName: UIColor.clearColor,
+            NSParagraphStyleAttributeName: [text getParagraphStyle],
         };
         CGFloat w = outImage.size.width - text.x;
         CGFloat h = outImage.size.height - text.y;
